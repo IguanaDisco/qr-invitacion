@@ -13,3 +13,25 @@ video {
     font-size: 1.2em;
     margin-top: 20px;
 }
+
+#popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+#popup h2 {
+    margin-top: 0;
+}
+
+#popup button {
+    margin: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

@@ -1,4 +1,3 @@
-// Importar Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
 
@@ -23,8 +22,12 @@ const video = document.getElementById("video");
 const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 const result = document.getElementById("result");
-const mesaNumero = document.getElementById("mesa-numero");
-const mesaEstado = document.getElementById("mesa-estado");
+const popup = document.getElementById("popup");
+const popupMesa = document.getElementById("popup-mesa");
+const btnSi = document.getElementById("btn-si");
+const btnNo = document.getElementById("btn-no");
+
+let mesaEscaneada = null; // Almacena la mesa escaneada
 
 // Acceder a la cámara
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
@@ -51,32 +54,36 @@ function tick() {
         if (code) {
             const numeroMesa = code.data;
             result.innerText = `Mesa escaneada: ${numeroMesa}`;
-            verificarMesa(numeroMesa); // Verificar el estado de la mesa
+            mostrarPopup(numeroMesa); // Mostrar el popup
         }
     }
     requestAnimationFrame(tick);
 }
 
-// Función para verificar el estado de la mesa
-function verificarMesa(numeroMesa) {
-    const mesaRef = ref(database, `mesas/${numeroMesa}`);
-    onValue(mesaRef, (snapshot) => {
-        const mesa = snapshot.val();
-        if (mesa && mesa.ocupada) {
-            mesaNumero.innerText = numeroMesa;
-            mesaEstado.innerText = "Ocupada";
-            alert(`La mesa ${numeroMesa} está ocupada.`);
-        } else {
-            mesaNumero.innerText = numeroMesa;
-            mesaEstado.innerText = "Disponible";
-            alert(`La mesa ${numeroMesa} está disponible.`);
-            // Marcar la mesa como ocupada
-            set(mesaRef, { ocupada: true });
-        }
-        // Actualizar la lista de mesas
-        mostrarEstadoMesas();
-    });
+// Función para mostrar el popup
+function mostrarPopup(numeroMesa) {
+    mesaEscaneada = numeroMesa; // Guardar la mesa escaneada
+    popupMesa.innerText = `¿Asignar ${numeroMesa} como ocupada?`;
+    popup.style.display = "block"; // Mostrar el popup
 }
+
+// Función para actualizar el estado de la mesa
+function actualizarEstadoMesa(ocupada) {
+    const mesaRef = ref(database, `mesas/${mesaEscaneada}`);
+    set(mesaRef, { ocupada })
+        .then(() => {
+            console.log(`Mesa ${mesaEscaneada} marcada como ${ocupada ? "ocupada" : "disponible"}.`);
+            popup.style.display = "none"; // Ocultar el popup
+            mostrarEstadoMesas(); // Actualizar la lista de mesas
+        })
+        .catch((error) => {
+            console.error("Error al actualizar la mesa:", error);
+        });
+}
+
+// Eventos para los botones del popup
+btnSi.addEventListener("click", () => actualizarEstadoMesa(true));
+btnNo.addEventListener("click", () => actualizarEstadoMesa(false));
 
 // Función para mostrar el estado de las mesas
 function mostrarEstadoMesas() {
@@ -100,4 +107,3 @@ function mostrarEstadoMesas() {
 
 // Llamar a la función para mostrar el estado de las mesas al cargar la página
 mostrarEstadoMesas();
-
