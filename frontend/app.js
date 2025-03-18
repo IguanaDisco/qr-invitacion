@@ -139,9 +139,18 @@ function mostrarEstadoMesas() {
         // Mostrar las mesas ordenadas
         mesasArray.forEach((mesa) => {
             const estado = mesa.estado ? "Ocupada" : "Disponible";
+            const color = mesa.estado ? "red" : "green"; // Asignar color según el estado
+
+            // Crear un elemento para mostrar la mesa
             const mesaElement = document.createElement("div");
             mesaElement.innerHTML = `<strong>${mesa.nombre}:</strong> ${estado}`;
-            mesasList.appendChild(mesaElement);
+            mesaElement.style.color = "white"; // Texto en blanco para mejor contraste
+            mesaElement.style.backgroundColor = color; // Fondo rojo o verde
+            mesaElement.style.padding = "10px"; // Espaciado interno
+            mesaElement.style.marginBottom = "5px"; // Margen inferior
+            mesaElement.style.borderRadius = "5px"; // Bordes redondeados
+
+            mesasList.appendChild(mesaElement); // Agregar la mesa a la lista
         });
     });
 }
