@@ -26,6 +26,9 @@ const popup = document.getElementById("popup");
 const popupMesa = document.getElementById("popup-mesa");
 const btnSi = document.getElementById("btn-si");
 const btnNo = document.getElementById("btn-no");
+const btnMostrarMesas = document.getElementById("btn-mostrar-mesas");
+const mesasContainer = document.getElementById("mesas-container");
+const mesasList = document.getElementById("mesas-list");
 
 let mesaEscaneada = null; // Almacena la mesa escaneada
 
@@ -85,25 +88,29 @@ function actualizarEstadoMesa(ocupada) {
 btnSi.addEventListener("click", () => actualizarEstadoMesa(true));
 btnNo.addEventListener("click", () => actualizarEstadoMesa(false));
 
+// Función para mostrar/ocultar el estado de las mesas
+btnMostrarMesas.addEventListener("click", () => {
+    if (mesasContainer.style.display === "none") {
+        mesasContainer.style.display = "block"; // Mostrar la lista
+        mostrarEstadoMesas(); // Actualizar la lista
+    } else {
+        mesasContainer.style.display = "none"; // Ocultar la lista
+    }
+});
+
 // Función para mostrar el estado de las mesas
 function mostrarEstadoMesas() {
     const mesasRef = ref(database, "mesas");
     onValue(mesasRef, (snapshot) => {
         const mesas = snapshot.val(); // Obtener los datos de las mesas
-        const mesasContainer = document.getElementById("mesas-container");
-
-        // Limpiar el contenedor antes de agregar los nuevos datos
-        mesasContainer.innerHTML = "";
+        mesasList.innerHTML = ""; // Limpiar la lista antes de agregar los nuevos datos
 
         // Recorrer las mesas y mostrarlas en la página
         for (const mesa in mesas) {
             const estado = mesas[mesa].ocupada ? "Ocupada" : "Disponible";
             const mesaElement = document.createElement("div");
             mesaElement.innerHTML = `<strong>${mesa}:</strong> ${estado}`;
-            mesasContainer.appendChild(mesaElement);
+            mesasList.appendChild(mesaElement);
         }
     });
 }
-
-// Llamar a la función para mostrar el estado de las mesas al cargar la página
-mostrarEstadoMesas();

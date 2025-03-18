@@ -35,3 +35,20 @@ video {
     padding: 10px 20px;
     cursor: pointer;
 }
+
+#btn-mostrar-mesas {
+    margin: 20px 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#mesas-container {
+    margin-top: 20px;
+}
+
+#mesas-list {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: #f9f9f9;
+}
