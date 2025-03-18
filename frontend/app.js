@@ -68,23 +68,26 @@ function verificarExistenciaMesa(numeroMesa) {
     const mesaRef = ref(database, `mesas/${numeroMesa}`);
     onValue(mesaRef, (snapshot) => {
         if (snapshot.exists()) { // Si la mesa existe
+            const estadoMesa = snapshot.val(); // Obtener el estado actual de la mesa
             result.innerText = `Mesa escaneada: ${numeroMesa}`;
             mesaEscaneada = numeroMesa; // Guardar la mesa escaneada
-            mostrarPopup(numeroMesa); // Mostrar el popup
+
+            // Mostrar el popup con un mensaje específico según el estado
+            if (estadoMesa) {
+                popupMesa.innerText = `La mesa ${numeroMesa} ya está ocupada. ¿Deseas dejarla disponible?`;
+                btnSi.innerText = "Sí, dejarla disponible";
+                btnNo.innerText = "No, mantener ocupada";
+            } else {
+                popupMesa.innerText = `¿Asignar ${numeroMesa} como ocupada?`;
+                btnSi.innerText = "Sí, ocupar";
+                btnNo.innerText = "No, mantener disponible";
+            }
+            popup.style.display = "block"; // Mostrar el popup
         } else {
             result.innerText = `Mesa no válida: ${numeroMesa}`;
         }
     });
 }
-
-// Función para mostrar el popup
-function mostrarPopup(numeroMesa) {
-    popupMesa.innerText = `¿Asignar ${numeroMesa} como ocupada?`;
-    popup.style.display = "block"; // Mostrar el popup
-}
-
-// Llamar a la función para mostrar el estado de las mesas al cargar la página
-mostrarEstadoMesas();
 
 // Función para actualizar el estado de la mesa
 function actualizarEstadoMesa(ocupada) {
@@ -103,8 +106,17 @@ function actualizarEstadoMesa(ocupada) {
 }
 
 // Eventos para los botones del popup
-btnSi.addEventListener("click", () => actualizarEstadoMesa(true));
-btnNo.addEventListener("click", () => actualizarEstadoMesa(false));
+btnSi.addEventListener("click", () => {
+    if (btnSi.innerText.includes("dejarla disponible")) {
+        actualizarEstadoMesa(false); // Cambiar a disponible
+    } else {
+        actualizarEstadoMesa(true); // Cambiar a ocupada
+    }
+});
+
+btnNo.addEventListener("click", () => {
+    popup.style.display = "none"; // Ocultar el popup sin hacer cambios
+});
 
 // Función para mostrar/ocultar el estado de las mesas
 btnMostrarMesas.addEventListener("click", () => {
