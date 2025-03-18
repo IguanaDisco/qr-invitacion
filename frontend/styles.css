@@ -8,7 +8,9 @@ body {
 video {
     border: 2px solid #333;
     border-radius: 10px;
-    max-width: 90%; /* Asegura que el video no sea demasiado grande */
+    width: 90%; /* Ocupa el 90% del ancho disponible */
+    max-width: 600px; /* Limita el ancho máximo para que no sea demasiado grande */
+    height: auto; /* Mantiene la proporción de aspecto */
     margin: 20px auto; /* Centrado */
 }
 
