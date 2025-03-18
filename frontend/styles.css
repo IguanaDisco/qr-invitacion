@@ -28,6 +28,20 @@ video {
     margin: 20px auto; /* Centrado */
 }
 
+/* Contenedor de la cámara */
+#video-container {
+    display: inline-block;
+    position: relative;
+    border: 5px solid red; /* Borde rojo por defecto */
+    border-radius: 10px;
+    transition: border-color 0.3s ease; /* Transición suave para el cambio de color */
+}
+
+/* Estilo cuando se detecta un código QR */
+#video-container.detected {
+    border-color: green; /* Borde verde cuando se detecta un código QR */
+}
+
 #popup {
     position: fixed;
     top: 50%;

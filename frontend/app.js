@@ -29,6 +29,7 @@ const btnNo = document.getElementById("btn-no");
 const btnMostrarMesas = document.getElementById("btn-mostrar-mesas");
 const mesasContainer = document.getElementById("mesas-container");
 const mesasList = document.getElementById("mesas-list");
+const videoContainer = document.getElementById("video-container"); // Contenedor de la cámara
 
 let mesaEscaneada = null; // Almacena la mesa escaneada
 
@@ -56,8 +57,13 @@ function tick() {
 
         if (code) {
             const numeroMesa = code.data;
+            // Cambiar el borde a verde cuando se detecta un código QR
+            videoContainer.classList.add("detected");
             // Verificar si la mesa escaneada existe en la base de datos
             verificarExistenciaMesa(numeroMesa);
+        } else {
+            // Cambiar el borde a rojo cuando no se detecta un código QR
+            videoContainer.classList.remove("detected");
         }
     }
     requestAnimationFrame(tick);

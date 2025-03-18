@@ -4,32 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Escanear Código QR</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script> <!-- Librería jsQR -->
-    <script type="module" src="app.js"></script> <!-- Enlace al archivo JavaScript -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script type="module" src="app.js"></script>
 </head>
 <body>
     <h1>Escanear Código QR</h1>
-    <video id="video" width="300" height="200" autoplay></video> <!-- Video para la cámara -->
-    <canvas id="canvas" style="display:none;"></canvas> <!-- Canvas para procesar el QR -->
-    <p id="result"></p> <!-- Resultado del escaneo -->
+    <div id="video-container"> <!-- Contenedor de la cámara -->
+        <video id="video" width="300" height="200" autoplay></video>
+    </div>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <p id="result"></p>
 
     <!-- Popup para asignar mesa -->
-    <div id="popup">
+    <div id="popup" style="display: none;">
         <h2 id="popup-title">Asignar Mesa:</h2>
-        <p id="popup-mesa"></p> <!-- Mensaje dinámico del popup -->
-        <button id="btn-si">Sí</button> <!-- Botón Sí -->
-        <button id="btn-no">No</button> <!-- Botón No -->
+        <p id="popup-mesa"></p>
+        <button id="btn-si">Sí</button>
+        <button id="btn-no">No</button>
     </div>
 
     <!-- Botón para mostrar/ocultar el estado de las mesas -->
     <button id="btn-mostrar-mesas">Mostrar Estado de las Mesas</button>
 
     <!-- Sección para mostrar el estado de las mesas (oculta por defecto) -->
-    <div id="mesas-container">
+    <div id="mesas-container" style="display: none;">
         <h2>Estado de las Mesas</h2>
         <div id="mesas-list">
-            <!-- Aquí se mostrarán las mesas dinámicamente -->
+            <!-- Aquí se mostrarán las mesas -->
         </div>
     </div>
 </body>
