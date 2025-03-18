@@ -33,7 +33,7 @@ video {
     display: inline-block;
     position: relative;
     border: 5px solid red; /* Borde rojo por defecto */
-    border-radius: 10px;
+    border-radius: 5px;
     transition: border-color 0.3s ease; /* Transición suave para el cambio de color */
 }
 
