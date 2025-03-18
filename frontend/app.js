@@ -73,6 +73,31 @@ function verificarMesa(numeroMesa) {
             // Marcar la mesa como ocupada
             set(mesaRef, { ocupada: true });
         }
+        // Actualizar la lista de mesas
+        mostrarEstadoMesas();
     });
 }
+
+// Función para mostrar el estado de las mesas
+function mostrarEstadoMesas() {
+    const mesasRef = ref(database, "mesas");
+    onValue(mesasRef, (snapshot) => {
+        const mesas = snapshot.val(); // Obtener los datos de las mesas
+        const mesasContainer = document.getElementById("mesas-container");
+
+        // Limpiar el contenedor antes de agregar los nuevos datos
+        mesasContainer.innerHTML = "";
+
+        // Recorrer las mesas y mostrarlas en la página
+        for (const mesa in mesas) {
+            const estado = mesas[mesa].ocupada ? "Ocupada" : "Disponible";
+            const mesaElement = document.createElement("div");
+            mesaElement.innerHTML = `<strong>${mesa}:</strong> ${estado}`;
+            mesasContainer.appendChild(mesaElement);
+        }
+    });
+}
+
+// Llamar a la función para mostrar el estado de las mesas al cargar la página
+mostrarEstadoMesas();
 
