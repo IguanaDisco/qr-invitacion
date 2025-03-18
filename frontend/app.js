@@ -129,3 +129,15 @@ function mostrarEstadoMesas() {
         }
     });
 }
+
+// Función para agregar una nueva mesa (disponible por defecto)
+function agregarMesa(numeroMesa) {
+    const mesaRef = ref(database, `mesas/${numeroMesa}`);
+    set(mesaRef, false) // Agregar la mesa como disponible (false)
+        .then(() => {
+            console.log(`Mesa ${numeroMesa} agregada como disponible.`);
+        })
+        .catch((error) => {
+            console.error("Error al agregar la mesa:", error);
+        });
+}
