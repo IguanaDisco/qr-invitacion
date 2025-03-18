@@ -56,22 +56,37 @@ function tick() {
 
         if (code) {
             const numeroMesa = code.data;
-            result.innerText = `Mesa escaneada: ${numeroMesa}`;
-            mostrarPopup(numeroMesa); // Mostrar el popup
+            // Verificar si la mesa escaneada existe en la base de datos
+            verificarExistenciaMesa(numeroMesa);
         }
     }
     requestAnimationFrame(tick);
 }
 
+// Función para verificar si la mesa existe en la base de datos
+function verificarExistenciaMesa(numeroMesa) {
+    const mesaRef = ref(database, `mesas/${numeroMesa}`);
+    onValue(mesaRef, (snapshot) => {
+        if (snapshot.exists()) { // Si la mesa existe
+            result.innerText = `Mesa escaneada: ${numeroMesa}`;
+            mesaEscaneada = numeroMesa; // Guardar la mesa escaneada
+            mostrarPopup(numeroMesa); // Mostrar el popup
+        } else {
+            result.innerText = `Mesa no válida: ${numeroMesa}`;
+        }
+    });
+}
+
 // Función para mostrar el popup
 function mostrarPopup(numeroMesa) {
-    mesaEscaneada = numeroMesa; // Guardar la mesa escaneada
     popupMesa.innerText = `¿Asignar ${numeroMesa} como ocupada?`;
     popup.style.display = "block"; // Mostrar el popup
 }
 
 // Función para actualizar el estado de la mesa
 function actualizarEstadoMesa(ocupada) {
+    if (!mesaEscaneada) return; // Si no hay una mesa escaneada, no hacer nada
+
     const mesaRef = ref(database, `mesas/${mesaEscaneada}`);
     set(mesaRef, ocupada) // Guardar directamente el valor booleano
         .then(() => {
