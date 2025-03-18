@@ -83,6 +83,9 @@ function mostrarPopup(numeroMesa) {
     popup.style.display = "block"; // Mostrar el popup
 }
 
+// Llamar a la función para mostrar el estado de las mesas al cargar la página
+mostrarEstadoMesas();
+
 // Función para actualizar el estado de la mesa
 function actualizarEstadoMesa(ocupada) {
     if (!mesaEscaneada) return; // Si no hay una mesa escaneada, no hacer nada
@@ -120,24 +123,25 @@ function mostrarEstadoMesas() {
         const mesas = snapshot.val(); // Obtener los datos de las mesas
         mesasList.innerHTML = ""; // Limpiar la lista antes de agregar los nuevos datos
 
-        // Recorrer las mesas y mostrarlas en la página
-        for (const mesa in mesas) {
-            const estado = mesas[mesa] ? "Ocupada" : "Disponible"; // Interpretar el valor booleano
-            const mesaElement = document.createElement("div");
-            mesaElement.innerHTML = `<strong>${mesa}:</strong> ${estado}`;
-            mesasList.appendChild(mesaElement);
-        }
-    });
-}
+        // Convertir las mesas en un array y ordenarlas numéricamente
+        const mesasArray = Object.keys(mesas).map((mesa) => ({
+            nombre: mesa,
+            estado: mesas[mesa]
+        }));
 
-// Función para agregar una nueva mesa (disponible por defecto)
-function agregarMesa(numeroMesa) {
-    const mesaRef = ref(database, `mesas/${numeroMesa}`);
-    set(mesaRef, false) // Agregar la mesa como disponible (false)
-        .then(() => {
-            console.log(`Mesa ${numeroMesa} agregada como disponible.`);
-        })
-        .catch((error) => {
-            console.error("Error al agregar la mesa:", error);
+        // Ordenar las mesas numéricamente
+        mesasArray.sort((a, b) => {
+            const numeroA = parseInt(a.nombre.replace("Mesa ", ""), 10);
+            const numeroB = parseInt(b.nombre.replace("Mesa ", ""), 10);
+            return numeroA - numeroB;
         });
+
+        // Mostrar las mesas ordenadas
+        mesasArray.forEach((mesa) => {
+            const estado = mesa.estado ? "Ocupada" : "Disponible";
+            const mesaElement = document.createElement("div");
+            mesaElement.innerHTML = `<strong>${mesa.nombre}:</strong> ${estado}`;
+            mesasList.appendChild(mesaElement);
+        });
+    });
 }
