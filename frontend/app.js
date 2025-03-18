@@ -73,7 +73,7 @@ function mostrarPopup(numeroMesa) {
 // Función para actualizar el estado de la mesa
 function actualizarEstadoMesa(ocupada) {
     const mesaRef = ref(database, `mesas/${mesaEscaneada}`);
-    set(mesaRef, { ocupada })
+    set(mesaRef, ocupada) // Guardar directamente el valor booleano
         .then(() => {
             console.log(`Mesa ${mesaEscaneada} marcada como ${ocupada ? "ocupada" : "disponible"}.`);
             popup.style.display = "none"; // Ocultar el popup
@@ -107,7 +107,7 @@ function mostrarEstadoMesas() {
 
         // Recorrer las mesas y mostrarlas en la página
         for (const mesa in mesas) {
-            const estado = mesas[mesa].ocupada ? "Ocupada" : "Disponible";
+            const estado = mesas[mesa] ? "Ocupada" : "Disponible"; // Interpretar el valor booleano
             const mesaElement = document.createElement("div");
             mesaElement.innerHTML = `<strong>${mesa}:</strong> ${estado}`;
             mesasList.appendChild(mesaElement);
