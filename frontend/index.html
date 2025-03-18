@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escanear Código QR</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+    <script type="module" src="app.js"></script>
+</head>
+<body>
+    <h1>Escanear Código QR</h1>
+    <video id="video" width="300" height="200" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <p id="result"></p>
+
+    <!-- Mostrar la mesa y su estado -->
+    <div id="mesa-info">
+        <p><strong>Mesa:</strong> <span id="mesa-numero"></span></p>
+        <p><strong>Estado:</strong> <span id="mesa-estado"></span></p>
+    </div>
+</body>
+</html>
